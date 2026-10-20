@@ -1,0 +1,80 @@
+---
+import Avatar from './Avatar.astro';
+import Icon from './Icon.astro';
+import SketchCards from './SketchCards.astro';
+import { profile, heroLines, heroEn, links } from '../data/site';
+
+const line = links.find((l) => l.key === 'line');
+---
+
+<section id="top" class="relative grid min-h-svh place-items-center overflow-hidden px-4 pt-28 pb-12 sm:px-6">
+  <SketchCards />
+
+  <div
+    class="relative z-10 grid w-full max-w-5xl items-center justify-center gap-14 md:grid-cols-[auto_auto] md:gap-20"
+  >
+    <!-- 左：アイコンのカード -->
+    <div class="relative mx-auto w-[min(70vw,330px)]">
+      <div
+        class="aspect-square overflow-hidden rounded-[36px] border-[7px] border-white bg-yellow shadow-[0_28px_60px_-20px_rgba(150,90,0,.45)]"
+        style="transform:rotate(-4deg)"
+      >
+        <Avatar size={330} square class="size-full" />
+      </div>
+      <p
+        class="absolute -bottom-5 left-1/2 -translate-x-1/2 rounded-full bg-ink px-5 py-2 whitespace-nowrap text-white shadow-[0_10px_24px_-8px_rgba(38,36,34,.6)]"
+      >
+        <span class="font-round text-base font-black tracking-[0.12em]">{profile.name}</span>
+      </p>
+    </div>
+
+    <!-- 右：大見出し -->
+    <div class="text-center md:text-left">
+      <p
+        class="inline-flex items-center gap-2 rounded-full bg-white px-4 py-1.5 text-[13px] font-bold tracking-[0.08em] shadow-[0_4px_16px_rgba(38,36,34,.06)]"
+      >
+        <span class="size-2 rounded-full bg-red" aria-hidden="true"></span>
+        {profile.catch}
+      </p>
+      <h1
+        class="font-round mt-5 text-[clamp(1.9rem,8.4vw,3.6rem)] leading-[1.4] font-black tracking-[0.06em] whitespace-nowrap md:text-[clamp(2.3rem,4.6vw,3.6rem)]"
+      >
+        {
+          heroLines.map((ln) => (
+            <span class="block">
+              {ln.map((p) =>
+                p.style === 'mark' ? (
+                  <span class="marker">{p.text}</span>
+                ) : p.style === 'fade' ? (
+                  <span class="text-fade">{p.text}</span>
+                ) : (
+                  p.text
+                ),
+              )}
+            </span>
+          ))
+        }
+      </h1>
+      <p class="font-en mt-3 text-sm font-medium tracking-[0.16em] text-sub">{heroEn}</p>
+    </div>
+  </div>
+
+  <!-- 公式LINEへの吹き出しボタン（PCは左下に浮かせる） -->
+  {
+    line && (
+      <a
+        href={line.url}
+        target="_blank"
+        rel="noopener"
+        class="group relative z-20 mt-12 flex w-full max-w-sm items-center justify-center gap-3 rounded-full bg-ink py-3.5 pr-5 pl-4 text-sm font-bold text-white shadow-[0_14px_30px_-10px_rgba(38,36,34,.5)] transition-transform hover:-translate-y-1 md:absolute md:bottom-8 md:left-8 md:mt-0 md:w-auto"
+      >
+        <span class="grid size-8 place-items-center rounded-full bg-[#06C755]">
+          <Icon name="line" size={18} class="text-white" />
+        </span>
+        公式LINEに登録する
+        <span class="transition-transform group-hover:translate-x-1" aria-hidden="true">→</span>
+        <span class="absolute -bottom-1.5 left-10 size-4 rotate-45 rounded-sm bg-ink max-md:hidden" aria-hidden="true" />
+      </a>
+    )
+  }
+</section>

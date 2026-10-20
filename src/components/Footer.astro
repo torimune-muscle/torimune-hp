@@ -1,0 +1,33 @@
+---
+import Avatar from './Avatar.astro';
+import Icon from './Icon.astro';
+import { profile, links } from '../data/site';
+---
+
+<footer class="px-4 pt-16 pb-10 sm:px-6">
+  <div class="mx-auto flex max-w-6xl flex-col items-center gap-6 text-center">
+    <a href="#top" class="flex items-center gap-3" aria-label="トップへ戻る">
+      <Avatar size={40} />
+      <span class="font-round font-black tracking-[0.1em]">{profile.name}</span>
+    </a>
+    <ul class="flex flex-wrap justify-center gap-2">
+      {
+        links.map((l) => (
+          <li>
+            <a
+              href={l.url}
+              target={l.url.startsWith('http') ? '_blank' : undefined}
+              rel="noopener"
+              aria-label={l.label}
+              title={l.label}
+              class="grid size-10 place-items-center rounded-full bg-white text-ink/70 transition-colors hover:bg-yellow hover:text-ink"
+            >
+              <Icon name={l.key} size={18} />
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="font-en text-xs tracking-[0.12em] text-sub">© {new Date().getFullYear()} {profile.nameEn}</p>
+  </div>
+</footer>

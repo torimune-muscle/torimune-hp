@@ -1,0 +1,60 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import { profile } from '../data/site';
+
+interface Props {
+  size?: number;
+  class?: string;
+  /** 丸ではなく角丸の四角で表示（親の角丸を引き継ぐ） */
+  square?: boolean;
+  /** 顔のあたりを拡大して表示（既定はOFF＝アカウントのアイコンそのまま） */
+  face?: boolean;
+}
+const { size = 48, class: className = '', square = false, face = false } = Astro.props;
+
+// src/assets/icon.(png|jpg|jpeg|webp) があれば本物のアイコンを使う（WebPに自動変換）。無ければ仮アイコン
+const found = Object.values(
+  import.meta.glob<ImageMetadata>('../assets/icon.{png,jpg,jpeg,webp}', { eager: true, import: 'default' }),
+)[0];
+const shape = square ? 'rounded-[inherit]' : 'rounded-full';
+// 顔の中心（アイコン画像に対する位置）と拡大率。アイコンを差し替えたらここを調整
+const faceStyle = 'transform:scale(1.55);transform-origin:50% 4%';
+---
+
+{
+  found ? (
+    <span
+      class={`inline-block shrink-0 overflow-hidden bg-yellow align-middle ${shape} ${className}`}
+      style={square ? '' : `width:${size}px;height:${size}px`}
+    >
+      <Image
+        src={found}
+        alt={profile.name}
+        width={size}
+        height={size}
+        densities={face ? [2, 3] : [1, 2]}
+        format="webp"
+        quality={82}
+        class="size-full object-cover"
+        style={face ? faceStyle : undefined}
+        loading={size >= 120 ? 'eager' : 'lazy'}
+      />
+    </span>
+  ) : (
+    <svg
+      viewBox="0 0 100 100"
+      width={size}
+      height={size}
+      class={`${shape} ${className}`}
+      role="img"
+      aria-label={`${profile.name}（仮アイコン）`}
+    >
+      <circle cx="50" cy="50" r="50" fill="#FCBE11" />
+      <ellipse cx="50" cy="60" rx="27" ry="25" fill="#fff" />
+      <circle cx="41" cy="54" r="3.4" fill="#242527" />
+      <circle cx="59" cy="54" r="3.4" fill="#242527" />
+      <path d="M45 61h10l-5 7Z" fill="#F29E1F" />
+    </svg>
+  )
+}

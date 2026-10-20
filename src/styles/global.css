@@ -1,0 +1,107 @@
+@import 'tailwindcss';
+@import '@fontsource/zen-kaku-gothic-new/400.css';
+@import '@fontsource/zen-kaku-gothic-new/500.css';
+@import '@fontsource/zen-kaku-gothic-new/700.css';
+@import '@fontsource/zen-maru-gothic/700.css';
+@import '@fontsource/zen-maru-gothic/900.css';
+@import '@fontsource-variable/outfit';
+
+/* トンマナ：アイコンの黄色（#FCBE11）＋オレンジ＋シャツの赤 × あたたかい紙色 */
+@theme {
+  --color-paper: #f8f4ea;
+  --color-paper-deep: #efe8d6;
+  --color-ink: #262422;
+  --color-sub: #6b6357;
+  --color-fade: #a0968a;
+  --color-line: #e5ddca;
+  --color-sketch: #d9d0bc;
+  --color-yellow: #fcbe11;
+  --color-yellow-soft: #ffe28a;
+  --color-yellow-deep: #fd9d12;
+  --color-red: #d63724;
+  /* 黄色系の文字色（小さい文字でも読める濃さ） */
+  --color-mustard: #8a5c00;
+
+  --font-sans: 'Zen Kaku Gothic New', system-ui, sans-serif;
+  --font-round: 'Zen Maru Gothic', 'Zen Kaku Gothic New', sans-serif;
+  --font-en: 'Outfit Variable', 'Zen Kaku Gothic New', sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 96px;
+  }
+  body {
+    @apply bg-paper text-ink font-sans antialiased;
+    letter-spacing: 0.04em;
+    line-height: 1.9;
+    /* 紙っぽいザラつき */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.3 0 0 0 0 0.25 0 0 0 0 0.15 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  /* 見出しは日本語を文節で改行（対応ブラウザのみ）。本文は通常の折り返し */
+  h1, h2, h3, .font-round {
+    word-break: auto-phrase;
+  }
+  ::selection {
+    background: var(--color-yellow);
+    color: var(--color-ink);
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-yellow-deep);
+    outline-offset: 3px;
+    border-radius: 8px;
+  }
+}
+
+@layer components {
+  /* 細く大きい英字見出し（参考サイトの ABOUT US 風） */
+  .sec-title {
+    @apply font-en text-mustard;
+    font-weight: 280;
+    font-size: clamp(2.6rem, 6vw, 4.2rem);
+    letter-spacing: 0.12em;
+    line-height: 1.1;
+  }
+  .sec-sub {
+    @apply mt-2 text-sm font-bold text-ink;
+    letter-spacing: 0.12em;
+  }
+  /* 黄色の蛍光ペン */
+  .marker {
+    background: linear-gradient(transparent 58%, var(--color-yellow) 58%, var(--color-yellow) 92%, transparent 92%);
+    padding: 0 0.04em;
+  }
+  .tag {
+    @apply inline-block rounded border border-sub/40 px-2 text-xs leading-6 text-sub;
+  }
+  .arrow-btn {
+    @apply inline-grid size-10 shrink-0 place-items-center rounded-full bg-ink text-white transition-transform duration-300;
+  }
+}
+
+/* スクロールでふわっと出す（JSが動く時だけ隠す＝JS無しでも中身は見える） */
+.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.9s cubic-bezier(0.2, 0.7, 0.2, 1),
+    transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition-delay: var(--d, 0s);
+}
+.js [data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+}
+
+@keyframes floaty {
+  0%, 100% { transform: translateY(0) rotate(var(--r, 0deg)); }
+  50% { transform: translateY(-12px) rotate(var(--r, 0deg)); }
+}
+.floaty { animation: floaty 6s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .js [data-reveal] { opacity: 1; transform: none; transition: none; }
+  .floaty { animation: none; }
+}

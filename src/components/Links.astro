@@ -1,0 +1,70 @@
+---
+import Icon from './Icon.astro';
+import { links } from '../data/site';
+import { platforms } from '../data/platforms';
+
+const featured = links.filter((l) => l.featured);
+const rest = links.filter((l) => !l.featured);
+---
+
+<section id="links" class="px-4 py-16 sm:px-6 sm:py-24">
+  <div class="mx-auto max-w-4xl">
+    <div class="text-center" data-reveal>
+      <h2 class="sec-title">LINKS</h2>
+      <p class="sec-sub">各種SNS・リンク</p>
+    </div>
+
+    <div class="mt-12 space-y-4">
+      {
+        featured.map((l) => (
+          <a
+            href={l.url}
+            target={l.url.startsWith('http') ? '_blank' : undefined}
+            rel="noopener"
+            data-reveal
+            class="group flex items-center gap-4 rounded-[26px] bg-yellow p-5 shadow-[0_20px_44px_-24px_rgba(176,127,0,.6)] transition-transform duration-300 hover:-translate-y-1 sm:gap-5 sm:p-6"
+          >
+            <span class="grid size-14 shrink-0 place-items-center rounded-2xl bg-white">
+              <Icon name={l.key} size={28} brand />
+            </span>
+            <span class="min-w-0 flex-1">
+              <span class="block text-lg font-bold tracking-[0.08em]">{l.label}</span>
+              <span class="block text-sm font-medium text-ink/75">{l.handle}</span>
+              {l.note && <span class="block text-xs text-ink/60">{l.note}</span>}
+            </span>
+            <span class="arrow-btn group-hover:translate-x-1" aria-hidden="true">→</span>
+          </a>
+        ))
+      }
+
+      <ul class="grid gap-3 sm:grid-cols-2">
+        {
+          rest.map((l, i) => (
+            <li data-reveal style={`--d:${(i % 2) * 0.08}s`}>
+              <a
+                href={l.url}
+                target={l.url.startsWith('http') ? '_blank' : undefined}
+                rel="noopener"
+                class="group flex items-center gap-4 rounded-[22px] border border-line bg-white p-4 transition-[transform,border-color] duration-300 hover:-translate-y-0.5 hover:border-yellow-deep"
+              >
+                <span
+                  class="grid size-11 shrink-0 place-items-center rounded-xl"
+                  style={`background:${platforms[l.key].color}14`}
+                >
+                  <Icon name={l.key} size={22} brand />
+                </span>
+                <span class="min-w-0 flex-1">
+                  <span class="block font-bold tracking-[0.06em]">{l.label}</span>
+                  <span class="block truncate text-xs text-sub">{l.handle}</span>
+                </span>
+                <span class="text-sub transition-transform group-hover:translate-x-1" aria-hidden="true">
+                  →
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>

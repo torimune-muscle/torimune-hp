@@ -1,0 +1,84 @@
+---
+// ヒーロー背景の手描き風カード（レシピ・投稿・体重計など）
+const cards = [
+  { kind: 'recipe', cls: 'left-[-4%] top-[14%] w-[22vw] min-w-[150px] max-w-[300px]', r: '-8deg', d: '0s' },
+  { kind: 'phone', cls: 'left-[16%] top-[-8%] w-[14vw] min-w-[110px] max-w-[190px] max-md:hidden', r: '6deg', d: '-2s' },
+  { kind: 'scale', cls: 'left-[6%] bottom-[-6%] w-[18vw] min-w-[140px] max-w-[240px]', r: '5deg', d: '-4s' },
+  { kind: 'post', cls: 'right-[18%] top-[-6%] w-[20vw] min-w-[150px] max-w-[260px] max-md:hidden', r: '-5deg', d: '-1s' },
+  { kind: 'recipe2', cls: 'right-[-5%] top-[22%] w-[20vw] min-w-[150px] max-w-[280px]', r: '8deg', d: '-3s' },
+  { kind: 'chart', cls: 'right-[30%] bottom-[-10%] w-[16vw] min-w-[130px] max-w-[220px] max-md:hidden', r: '-4deg', d: '-5s' },
+];
+---
+
+<div class="pointer-events-none absolute inset-0 overflow-hidden opacity-60" aria-hidden="true">
+  {
+    cards.map((c) => (
+      <div class={`floaty absolute ${c.cls}`} style={`--r:${c.r};animation-delay:${c.d}`}>
+        <svg
+          viewBox="0 0 200 260"
+          class="h-auto w-full"
+          fill="none"
+          stroke="var(--color-sketch)"
+          stroke-width="4"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <rect x="6" y="6" width="188" height="248" rx="22" fill="#F1ECDF" />
+          {c.kind === 'recipe' && (
+            <>
+              <path d="M40 120h120c0 34-26 56-60 56s-60-22-60-56Z" />
+              <path d="M62 120c4-16 18-24 30-20 6-14 26-14 32 0 12-2 22 8 22 20" />
+              <path d="M84 70c-6-10 6-16 0-28M104 70c-6-10 6-16 0-28M124 70c-6-10 6-16 0-28" />
+              <path d="M40 204h120M40 226h80" />
+            </>
+          )}
+          {c.kind === 'recipe2' && (
+            <>
+              <circle cx="100" cy="100" r="56" />
+              <circle cx="100" cy="100" r="38" />
+              <path d="M80 92c10-14 32-14 40 2M84 112c12 6 24 6 34-2" />
+              <path d="M30 40l18 0M152 40h18" />
+              <path d="M40 190h120M40 212h96M40 234h60" />
+            </>
+          )}
+          {c.kind === 'phone' && (
+            <>
+              <circle cx="46" cy="44" r="16" />
+              <path d="M74 38h80M74 52h50" />
+              <rect x="24" y="76" width="70" height="70" rx="8" />
+              <rect x="106" y="76" width="70" height="70" rx="8" />
+              <rect x="24" y="158" width="70" height="70" rx="8" />
+              <rect x="106" y="158" width="70" height="70" rx="8" />
+            </>
+          )}
+          {c.kind === 'post' && (
+            <>
+              <rect x="22" y="22" width="156" height="140" rx="12" />
+              <path d="M60 120c10-30 30-46 48-34 16-18 40-4 40 34Z" />
+              <path d="M28 186c6-8 14-8 18 0 4-8 12-8 18 0-6 10-18 16-18 16s-12-6-18-16ZM84 188a10 10 0 1 1 6 8l-8 4ZM120 182l20 6-20 6 4-6Z" />
+              <path d="M28 222h140M28 240h90" />
+            </>
+          )}
+          {c.kind === 'scale' && (
+            <>
+              <rect x="30" y="60" width="140" height="150" rx="26" />
+              <path d="M62 110a38 38 0 0 1 76 0" />
+              <path d="M100 110l18-22" />
+              <path d="M70 176h60" />
+              <path d="M40 34h120" />
+            </>
+          )}
+          {c.kind === 'chart' && (
+            <>
+              <path d="M30 40v170h150" />
+              <path d="M44 70l30 26 26-6 26 40 24 10 22 44" />
+              <circle cx="44" cy="70" r="5" />
+              <circle cx="172" cy="190" r="5" />
+              <path d="M40 236h80" />
+            </>
+          )}
+        </svg>
+      </div>
+    ))
+  }
+</div>

@@ -1,0 +1,167 @@
+---
+import Icon from './Icon.astro';
+import { contact, links, profile } from '../data/site';
+
+const line = links.find((l) => l.key === 'line');
+const field =
+  'mt-1.5 w-full rounded-2xl border border-line bg-paper/60 px-4 py-3 text-[15px] tracking-normal outline-none transition-colors placeholder:text-fade focus:border-yellow-deep focus:bg-white';
+const label = 'block text-left text-xs font-bold tracking-[0.1em]';
+---
+
+<section id="contact" class="px-3 pt-10 sm:px-4">
+  <div class="relative overflow-hidden rounded-[40px] bg-yellow px-4 py-20 sm:px-6 sm:py-24">
+    <!-- 背景のゆるい丸 -->
+    <span class="absolute -top-24 -left-20 size-72 rounded-full bg-yellow-soft/70" aria-hidden="true"></span>
+    <span class="absolute -right-16 -bottom-28 size-80 rounded-full bg-yellow-deep/30" aria-hidden="true"></span>
+
+    <div class="relative mx-auto max-w-5xl" data-reveal>
+      <div class="text-center">
+        <h2 class="sec-title !text-ink">CONTACT</h2>
+        <p class="font-round mt-6 text-[clamp(1.2rem,5vw,2rem)] font-black tracking-[0.08em]">{contact.lead}</p>
+        <p class="mx-auto mt-4 max-w-xl text-sm text-ink/80">{contact.body}</p>
+      </div>
+
+      <div class="mt-12 grid gap-5 md:grid-cols-[1.5fr_1fr]">
+        <!-- お仕事のご依頼：フォーム -->
+        <form
+          id="contact-form"
+          class="rounded-[28px] bg-white p-6 shadow-[0_24px_50px_-30px_rgba(38,36,34,.45)] sm:p-8"
+          data-key={contact.formAccessKey}
+          novalidate
+        >
+          <p class="flex items-center gap-2 text-sm font-bold tracking-[0.1em]">
+            <Icon name="mail" size={18} />
+            お仕事のご依頼
+          </p>
+
+          <input type="hidden" name="subject" value={`【HP】${profile.name}へのお問い合わせ`} />
+          <input type="hidden" name="from_name" value={`${profile.name} 公式HP`} />
+          <input type="checkbox" name="botcheck" class="hidden" tabindex="-1" autocomplete="off" />
+
+          <div class="mt-6 grid gap-5 sm:grid-cols-2">
+            <label class={label}>
+              お名前・会社名 <span class="text-red">*</span>
+              <input name="name" required autocomplete="name" class={field} placeholder="山田 花子／株式会社〇〇" />
+            </label>
+            <label class={label}>
+              メールアドレス <span class="text-red">*</span>
+              <input name="email" type="email" required autocomplete="email" class={field} placeholder="example@mail.com" />
+            </label>
+          </div>
+          <label class={`${label} mt-5`}>
+            ご用件
+            <select name="ご用件" class={`${field} appearance-none bg-[url('data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2024%2024%22%3E%3Cpath%20d=%22M6%209l6%206%206-6%22%20fill=%22none%22%20stroke=%22%236b6357%22%20stroke-width=%222%22/%3E%3C/svg%3E')] bg-[length:18px] bg-[right_1rem_center] bg-no-repeat pr-10`}>
+              {contact.topics.map((t) => <option>{t}</option>)}
+            </select>
+          </label>
+          <label class={`${label} mt-5`}>
+            お問い合わせ内容 <span class="text-red">*</span>
+            <textarea
+              name="message"
+              required
+              rows="5"
+              class={`${field} resize-y leading-relaxed`}
+              placeholder="ご依頼の内容・ご予算・希望時期などをご記入ください"></textarea>
+          </label>
+
+          <p class="mt-4 text-left text-[11px] leading-relaxed text-sub">
+            いただいた情報は、ご連絡のためだけに使用します。
+          </p>
+
+          <button
+            type="submit"
+            class="group mt-5 grid w-full grid-cols-[2.25rem_1fr_2.25rem] items-center gap-3 rounded-full bg-ink px-3.5 py-3.5 font-bold tracking-[0.08em] text-white shadow-[0_16px_30px_-12px_rgba(46,42,36,.6)] transition-[transform,opacity] hover:-translate-y-0.5 disabled:pointer-events-none disabled:opacity-60"
+          >
+            <span aria-hidden="true"></span>
+            <span data-label class="text-center">送信する</span>
+            <span class="grid size-9 place-items-center rounded-full bg-yellow text-ink transition-transform group-hover:translate-x-1" aria-hidden="true">→</span>
+          </button>
+          <p data-status role="status" aria-live="polite" class="mt-4 hidden rounded-2xl px-4 py-3 text-left text-sm font-bold"></p>
+        </form>
+
+        <!-- 個別相談：公式LINE -->
+        {
+          line && (
+            <div class="flex flex-col rounded-[28px] bg-white/70 p-6 text-center backdrop-blur sm:p-8">
+              <p class="flex items-center justify-center gap-2 text-sm font-bold tracking-[0.1em]">
+                <Icon name="line" size={18} brand />
+                ダイエットの個別相談
+              </p>
+              <p class="mt-5 text-sm leading-relaxed text-ink/80">
+                公式LINEに登録して、トークから気軽にご相談ください。特典もプレゼント中です。
+              </p>
+              <p class="mt-6 text-left text-xs font-bold tracking-[0.1em] text-sub">こんなご相談ができます</p>
+              <ul class="mt-2 space-y-2 text-left">
+                {contact.consultTopics.map((t) => (
+                  <li class="flex items-start gap-2.5 rounded-2xl bg-white px-4 py-2.5 text-sm font-medium">
+                    <span class="mt-[3px] grid size-4 shrink-0 place-items-center rounded-full bg-[#06C755] text-[10px] leading-none text-white" aria-hidden="true">✓</span>
+                    {t}
+                  </li>
+                ))}
+              </ul>
+              <div class="grow" />
+              <a
+                href={line.url}
+                target="_blank"
+                rel="noopener"
+                class="group mt-8 grid w-full grid-cols-[2.25rem_1fr_2.25rem] items-center gap-3 rounded-full bg-[#06C755] px-3.5 py-3.5 font-bold tracking-[0.08em] text-white shadow-[0_16px_30px_-14px_rgba(6,140,60,.6)] transition-transform hover:-translate-y-0.5"
+              >
+                <span aria-hidden="true" />
+                <span class="text-center">公式LINEで相談する</span>
+                <span class="grid size-9 place-items-center rounded-full bg-white text-ink transition-transform group-hover:translate-x-1" aria-hidden="true">→</span>
+              </a>
+            </div>
+          )
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('#contact-form');
+  if (form) {
+    const status = form.querySelector<HTMLElement>('[data-status]')!;
+    const button = form.querySelector<HTMLButtonElement>('button[type=submit]')!;
+    const label = button.querySelector<HTMLElement>('[data-label]')!;
+
+    const show = (msg: string, ok: boolean) => {
+      status.textContent = msg;
+      status.classList.remove('hidden', 'bg-red/10', 'text-red', 'bg-[#06C755]/10', 'text-[#067a37]');
+      status.classList.add(...(ok ? ['bg-[#06C755]/10', 'text-[#067a37]'] : ['bg-red/10', 'text-red']));
+    };
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+      const key = form.dataset.key;
+      if (!key) {
+        show('フォームは現在準備中です。お手数ですが公式LINEからご連絡ください。', false);
+        return;
+      }
+      // FormData のまま送る（独自ヘッダーを付けない＝CORSの事前確認が発生しない）
+      const data = new FormData(form);
+      data.append('access_key', key);
+      button.disabled = true;
+      label.textContent = '送信中…';
+      try {
+        const res = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: data });
+        const json = await res.json().catch(() => ({}));
+        if (res.ok && json.success) {
+          form.reset();
+          show('送信しました。内容を確認のうえ、ご連絡いたします。', true);
+        } else {
+          show('送信できませんでした。時間をおいて再度お試しください。', false);
+        }
+      } catch {
+        show('通信エラーで送信できませんでした。時間をおいて再度お試しください。', false);
+      } finally {
+        button.disabled = false;
+        label.textContent = '送信する';
+      }
+    });
+  }
+</script>

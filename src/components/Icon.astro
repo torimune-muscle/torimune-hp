@@ -1,0 +1,26 @@
+---
+import { platforms } from '../data/platforms';
+import type { PlatformKey } from '../data/site';
+
+interface Props {
+  name: PlatformKey;
+  size?: number;
+  class?: string;
+  /** true でブランドカラー、false で currentColor */
+  brand?: boolean;
+}
+const { name, size = 18, class: className, brand = false } = Astro.props;
+const p = platforms[name];
+---
+
+<svg
+  viewBox={p.viewBox}
+  width={size}
+  height={size}
+  fill={brand ? p.color : 'currentColor'}
+  class={className}
+  aria-hidden="true"
+  overflow="visible"
+>
+  <path d={p.path} fill-rule={p.fillRule}></path>
+</svg>

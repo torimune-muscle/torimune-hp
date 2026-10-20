@@ -1,0 +1,88 @@
+---
+import Avatar from './Avatar.astro';
+import Icon from './Icon.astro';
+import { profile, stats, aboutLead, aboutPoints, aboutNote, links } from '../data/site';
+
+const line = links.find((l) => l.key === 'line');
+---
+
+<section id="about" class="px-4 py-16 sm:px-6 sm:py-24">
+  <div
+    class="mx-auto max-w-6xl rounded-[36px] border border-white bg-white/70 px-6 py-14 shadow-[0_30px_80px_-40px_rgba(46,42,36,.25)] backdrop-blur sm:px-14 sm:py-20"
+  >
+    <div data-reveal>
+      <h2 class="sec-title">ABOUT</h2>
+      <p class="sec-sub">わたしについて</p>
+    </div>
+
+    <div class="mt-12 grid gap-12 md:grid-cols-[1.1fr_1fr] md:gap-16">
+      <div data-reveal style="--d:.1s">
+        <p
+          class="font-round flex w-fit items-center gap-3 text-[clamp(1.35rem,5.6vw,2.4rem)] leading-[1.6] font-black tracking-[0.06em] sm:gap-4"
+        >
+          <span class="h-[2.4em] w-[3px] shrink-0 -rotate-[24deg] rounded-full bg-mustard" aria-hidden="true"></span>
+          <span>
+            {aboutLead.map((t, i) => <span class={`block w-fit ${i === aboutLead.length - 1 ? 'marker' : ''}`}>{t}</span>)}
+          </span>
+          <span class="h-[2.4em] w-[3px] shrink-0 rotate-[24deg] rounded-full bg-mustard" aria-hidden="true"></span>
+        </p>
+
+        <ul class="mt-8 space-y-3">
+          {
+            aboutPoints.map((p) => (
+              <li class="flex items-start gap-3 text-[15px] leading-relaxed font-medium">
+                <span
+                  class="mt-[5px] grid size-5 shrink-0 place-items-center rounded-full bg-yellow text-[11px] leading-none font-bold"
+                  aria-hidden="true"
+                >
+                  ✓
+                </span>
+                <span>
+                  {p.text}
+                  {p.link && line && (
+                    <a
+                      href={line.url}
+                      target="_blank"
+                      rel="noopener"
+                      class="group mt-3 flex w-fit items-center gap-2.5 rounded-full bg-[#06C755] py-2 pr-4 pl-2.5 text-sm font-bold text-white shadow-[0_10px_22px_-12px_rgba(6,140,60,.7)] transition-transform hover:-translate-y-0.5"
+                    >
+                      <span class="grid size-7 place-items-center rounded-full bg-white">
+                        <Icon name="line" size={16} brand />
+                      </span>
+                      無料ツールを受け取る
+                      <span class="transition-transform group-hover:translate-x-1" aria-hidden="true">→</span>
+                    </a>
+                  )}
+                </span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div class="flex flex-col gap-6" data-reveal style="--d:.2s">
+        <div class="flex items-center gap-4 rounded-3xl bg-paper p-5">
+          <Avatar size={72} />
+          <div class="min-w-0">
+            <p class="font-round text-lg font-black tracking-[0.1em]">{profile.name}</p>
+            <p class="text-sm text-sub">{profile.catch}</p>
+            <p class="mt-1 text-sm font-bold">{aboutNote}</p>
+          </div>
+        </div>
+        <ul class="grid grid-cols-3 gap-3">
+          {
+            stats.map((s) => (
+              <li class="rounded-3xl bg-yellow/90 px-2 py-5 text-center">
+                <p class="font-en text-[clamp(1.15rem,4.6vw,2rem)] leading-none font-bold tracking-tight whitespace-nowrap">
+                  {s.value}
+                  <span class="ml-0.5 text-[0.55em] font-semibold">{s.unit}</span>
+                </p>
+                <p class="mt-2 text-[11px] leading-snug font-bold tracking-normal text-ink/75">{s.label}</p>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
